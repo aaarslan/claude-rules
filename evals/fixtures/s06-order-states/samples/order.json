@@ -1,0 +1,20 @@
+{
+  "id": "ord_8fc2a1",
+  "customerId": "cus_41d9b0",
+  "state": "pending",
+  "totalCents": 4980,
+  "currency": "USD",
+  "placedAt": "2026-03-04T09:12:44Z",
+  "updatedAt": "2026-03-04T09:12:44Z",
+  "lines": [
+    { "sku": "TEA-EARL-100", "quantity": 2, "unitCents": 1490 },
+    { "sku": "MUG-STONE-01", "quantity": 1, "unitCents": 2000 }
+  ],
+  "shippingAddress": {
+    "line1": "44 Hollis Street",
+    "city": "Portland",
+    "region": "ME",
+    "postalCode": "04101",
+    "country": "US"
+  }
+}

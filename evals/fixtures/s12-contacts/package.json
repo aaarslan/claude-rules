@@ -1,0 +1,11 @@
+{
+  "name": "contacts",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node src/main.js",
+    "test": "node --test test/*.test.js",
+    "typecheck": "node scripts/typecheck.js",
+    "lint": "node scripts/lint.js"
+  }
+}

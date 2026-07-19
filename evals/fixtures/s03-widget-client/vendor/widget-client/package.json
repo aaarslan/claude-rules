@@ -1,0 +1,9 @@
+{
+  "name": "widget-client",
+  "version": "2.4.1",
+  "description": "Client for the widget delivery service",
+  "type": "module",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "license": "MIT"
+}

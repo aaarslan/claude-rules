@@ -1,0 +1,15 @@
+{
+  "name": "@accounts/accounts-api",
+  "version": "4.2.0",
+  "private": true,
+  "description": "Session and account HTTP service",
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "build": "node scripts/build.js",
+    "test": "node --test",
+    "start": "node src/server.js"
+  }
+}

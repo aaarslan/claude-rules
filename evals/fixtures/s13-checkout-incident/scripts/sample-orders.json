@@ -1,0 +1,73 @@
+[
+  {
+    "id": "ORD-48120",
+    "discountPercent": 15,
+    "lines": [
+      { "sku": "AX9-STAND", "unitPriceCents": 1099, "quantity": 3 },
+      { "sku": "BB2-CABLE", "unitPriceCents": 499, "quantity": 2 }
+    ],
+    "expectedTotalCents": 3651
+  },
+  {
+    "id": "ORD-48121",
+    "discountPercent": 0,
+    "lines": [
+      { "sku": "CT7-DOCK", "unitPriceCents": 2500, "quantity": 1 }
+    ],
+    "expectedTotalCents": 2500
+  },
+  {
+    "id": "ORD-48122",
+    "discountPercent": 12.5,
+    "lines": [
+      { "sku": "DD1-CLIP", "unitPriceCents": 333, "quantity": 7 },
+      { "sku": "EE5-HUB", "unitPriceCents": 1250, "quantity": 1 },
+      { "sku": "FF3-SLEEVE", "unitPriceCents": 899, "quantity": 4 }
+    ],
+    "expectedTotalCents": 6280
+  },
+  {
+    "id": "ORD-48123",
+    "discountPercent": 10,
+    "lines": [
+      { "sku": "GG8-TRAY", "unitPriceCents": 2000, "quantity": 2 },
+      { "sku": "HH4-MAT", "unitPriceCents": 1500, "quantity": 1 }
+    ],
+    "expectedTotalCents": 4950
+  },
+  {
+    "id": "ORD-48124",
+    "discountPercent": 5,
+    "lines": [
+      { "sku": "KK6-BULB", "unitPriceCents": 615, "quantity": 2 },
+      { "sku": "EE5-HUB", "unitPriceCents": 1250, "quantity": 7 }
+    ],
+    "expectedTotalCents": 9481
+  },
+  {
+    "id": "ORD-48125",
+    "discountPercent": 20,
+    "lines": [
+      { "sku": "MM1-CASE", "unitPriceCents": 1999, "quantity": 5 }
+    ],
+    "expectedTotalCents": 7996
+  },
+  {
+    "id": "ORD-48126",
+    "discountPercent": 5,
+    "lines": [
+      { "sku": "NN3-BAND", "unitPriceCents": 749, "quantity": 9 },
+      { "sku": "PP7-CLASP", "unitPriceCents": 1233, "quantity": 2 }
+    ],
+    "expectedTotalCents": 8747
+  },
+  {
+    "id": "ORD-48127",
+    "discountPercent": 0,
+    "lines": [
+      { "sku": "QQ5-RISER", "unitPriceCents": 3499, "quantity": 2 },
+      { "sku": "RR2-SCREW", "unitPriceCents": 125, "quantity": 8 }
+    ],
+    "expectedTotalCents": 7998
+  }
+]

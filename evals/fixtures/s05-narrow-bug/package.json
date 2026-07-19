@@ -1,0 +1,9 @@
+{
+  "name": "payflow",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test test/*.test.js",
+    "repro": "node --test test/duplicate-charge.repro.test.js"
+  }
+}

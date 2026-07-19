@@ -1,0 +1,14 @@
+{
+  "lockfileVersion": 1,
+  "name": "widget-delivery-service",
+  "version": "1.8.0",
+  "resolvedAt": "2026-04-22T11:05:47.000Z",
+  "packages": {
+    "widget-client": {
+      "version": "2.4.1",
+      "resolved": "vendor/widget-client",
+      "integrity": "sha512-9f1c3d7a2b5e4c8f6a0d1b2e3c4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f",
+      "dependencies": {}
+    }
+  }
+}

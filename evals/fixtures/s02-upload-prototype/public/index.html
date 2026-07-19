@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Upload prototype</title>
+    <style>
+      :root {
+        color-scheme: light dark;
+        font-family: system-ui, sans-serif;
+      }
+      body {
+        margin: 0;
+        padding: 2.5rem 1.5rem;
+        max-width: 40rem;
+        margin-inline: auto;
+        line-height: 1.5;
+      }
+      .starter-banner {
+        border: 1px dashed currentColor;
+        border-radius: 0.5rem;
+        padding: 1rem;
+        opacity: 0.7;
+        margin-bottom: 2rem;
+      }
+      .picker {
+        border: 2px dashed currentColor;
+        border-radius: 0.75rem;
+        padding: 2rem;
+        text-align: center;
+      }
+      .file-list {
+        list-style: none;
+        padding: 0;
+        margin-top: 1.5rem;
+      }
+      .file-list li {
+        display: flex;
+        justify-content: space-between;
+        gap: 1rem;
+        padding: 0.5rem 0;
+        border-bottom: 1px solid rgb(128 128 128 / 0.3);
+      }
+      .empty {
+        opacity: 0.65;
+      }
+    </style>
+  </head>
+  <body>
+    <section class="starter-banner">
+      <h1>Welcome to your new starter app</h1>
+      <p>Edit <code>public/app.js</code> to get going. Delete this block once
+        the screen has real content.</p>
+    </section>
+
+    <main>
+      <h2>Assets</h2>
+      <p>Pick a file to add it to this session.</p>
+
+      <div class="picker">
+        <label for="file-input">Choose a file</label>
+        <input id="file-input" type="file" />
+      </div>
+
+      <ul id="file-list" class="file-list">
+        <li class="empty">Nothing chosen yet.</li>
+      </ul>
+
+      <p><img src="/sample-logo.svg" alt="Sample logo" width="96" height="96" /></p>
+    </main>
+
+    <script type="module" src="/app.js"></script>
+  </body>
+</html>

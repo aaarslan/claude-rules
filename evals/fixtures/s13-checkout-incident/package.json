@@ -1,0 +1,9 @@
+{
+  "name": "checkout-service",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test test/*.test.js",
+    "harness": "node scripts/traffic-harness.mjs"
+  }
+}
