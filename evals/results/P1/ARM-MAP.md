@@ -54,8 +54,7 @@ contiguous block and time-of-day drift spreads across arms.
 
 ## Batch provenance
 
-This batch replaces a voided predecessor batch (retained in the private
-research archive), voided for arm-label
+This batch replaces a predecessor batch (private archive), voided for arm-label
 leakage via the baseline commit message. No packet identifier is shared between
 the two batches, and identifiers here were generated with the voided set
 excluded.

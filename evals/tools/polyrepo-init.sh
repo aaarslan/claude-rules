@@ -35,8 +35,9 @@ polyrepo_init() {
       [ -d "$dest/.claude" ] && cp -R "$dest/.claude" "$dest/$root/.claude"
       ctx="$(root_context "$root" "$pairs")"
       if [ -n "$ctx" ]; then
-        sed -i '' "s|^Active canonical contexts: .*|Active canonical contexts: $ctx; ignore the others.|" \
-          "$dest/$root/AGENTS.md"
+        sed "s|^Active canonical contexts: .*|Active canonical contexts: $ctx; ignore the others.|" \
+          "$dest/$root/AGENTS.md" > "$dest/$root/AGENTS.md.tmp"
+        mv "$dest/$root/AGENTS.md.tmp" "$dest/$root/AGENTS.md"
       fi
     fi
     init_repo "$dest/$root"

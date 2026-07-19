@@ -18,6 +18,10 @@ IFS=$'\n\t'
 MEM="${CODEX_REAL_HOME:-$HOME/.codex}/memories"
 MODE_FILE="${TMPDIR:-/tmp}/codex-memories-mode"
 
+# GNU stat spells the mode format -c; BSD spells it -f. Probing once keeps
+# deny/restore working on both, instead of silently failing before chmod.
+mode_of() { stat -f '%Lp' "$1" 2>/dev/null || stat -c '%a' "$1"; }
+
 case "${1:-}" in
   prepare)
     iso="${2:?usage: codex-isolate.sh prepare <iso-home>}"
@@ -47,7 +51,7 @@ EOF
       rm -f "$MODE_FILE"
       printf 'pre-flight: cleared a stale deny before re-applying\n'
     fi
-    stat -f '%Lp' "$MEM" > "$MODE_FILE"
+    mode_of "$MEM" > "$MODE_FILE"
     chmod 000 "$MEM"
     printf 'denied: %s (previous mode %s saved)\n' "$MEM" "$(cat "$MODE_FILE")"
     ;;
@@ -59,7 +63,7 @@ EOF
     ;;
   status)
     printf 'memories dir: %s\n' "$MEM"
-    [[ -d "$MEM" ]] && printf 'current mode: %s\n' "$(stat -f '%Lp' "$MEM")"
+    [[ -d "$MEM" ]] && printf 'current mode: %s\n' "$(mode_of "$MEM")"
     if [[ -f "$MODE_FILE" ]]; then
       printf 'saved mode:   %s (deny is ACTIVE; run restore)\n' "$(cat "$MODE_FILE")"
     else

@@ -5,8 +5,8 @@ executed 2026-07-18 at revision `a6f45b3`. **No scoring, no verdicts.** This fil
 records execution facts only. Packets go to graders; [ARM-MAP.md](ARM-MAP.md)
 does not.
 
-This batch replaces a predecessor voided for arm-label leakage, retained in the
-private research archive. No packet identifier is shared with it.
+This batch replaces a predecessor batch (private archive), voided for arm-label
+leakage. No packet identifier is shared with the voided batch.
 
 ## Validity: 36 of 36
 

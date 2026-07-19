@@ -2,9 +2,13 @@
 // Score observed rule-file loads against the pre-registered expected sets and
 // apply the Phase 0 gate. Loads come from extract-loads.mjs, which counts only
 // real reads; never feed this a path grep over a transcript.
+// Hook-injected files count as loaded: their contents enter context verbatim,
+// and route-hook tells the model not to re-read them, so a compliant Claude
+// arm-B run legitimately shows few or zero reads. Pass an injected-list file as
+// <log-directory>/<run-id>.injected.txt to have it credited.
 // Usage: score-gate.mjs <claude|codex> <log-directory> [run-prefix]
 import { execFileSync } from 'node:child_process';
-import { existsSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { RUNS, GATE_PERCENT } from './expected-sets.mjs';
@@ -39,6 +43,12 @@ for (const run of RUNS) {
     encoding: 'utf8',
   }).trim();
   const loaded = new Set(output ? output.split('\n') : []);
+  // Credit mechanical delivery alongside reads.
+  const injectedPath = path.join(logDirectory, `${prefix}-${surface}-${run.id}.injected.txt`);
+  const injected = existsSync(injectedPath)
+    ? readFileSync(injectedPath, 'utf8').split('\n').filter(Boolean)
+    : [];
+  injected.forEach((rule) => loaded.add(rule));
   const hit = run.required.filter((rule) => loaded.has(rule));
   const missing = run.required.filter((rule) => !loaded.has(rule));
   const extra = [...loaded].filter((rule) => !run.required.includes(rule));
@@ -47,7 +57,8 @@ for (const run of RUNS) {
   totalRequired += run.required.length;
 
   console.log(`--- ${run.id} (${run.route}) --- ${hit.length}/${run.required.length} required`
-    + ` = ${percent(hit.length, run.required.length)}%`);
+    + ` = ${percent(hit.length, run.required.length)}%`
+    + (injected.length ? ` (${injected.length} injected, ${loaded.size - injected.length} read)` : ''));
   console.log(`  loaded:  ${hit.join(', ') || '(none)'}`);
   console.log(`  MISSING: ${missing.join(', ') || '(none)'}`);
   console.log(`  extra:   ${extra.join(', ') || '(none)'}\n`);

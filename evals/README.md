@@ -2,8 +2,6 @@
 
 These evaluations measure whether Agent Engineering Rules change observable coding-agent behavior: scope discipline, evidence use, contract tracing, verification honesty, and profile-sensitive assurance. They do not measure model intelligence in general and do not prove universal reliability.
 
-Raw run packets and transcripts live in the private research archive; this repository carries the findings and the framework to reproduce them.
-
 ## Run an evaluation
 
 1. Start from a clean, disposable checkout at a recorded revision. Materialize the scenario setup from [fixtures/catalog.md](fixtures/catalog.md), or use an equivalent repository that preserves the stated trap.
@@ -26,6 +24,6 @@ Use [scenarios/_template.md](scenarios/_template.md) for additions. A scenario m
 
 Link a rule change to the result ID and observed failure it is intended to prevent. After repeated runs, prune or revise rules that do not measurably change behavior. A failed, timed-out, empty, or externally interrupted run is invalid or failed as defined by the scenario—never silently counted as a pass.
 
-No results ship with this release. The `results/` directory contains only a blank recording template.
+Findings ship in `results/`: reconciliations, per-batch results, arm maps, and grade sheets. Raw packets stay in the private research archive; `results/TEMPLATE.md` is the blank recording form.
 
 The design-time [routing walkthrough](ROUTING-WALKTHROUGH.md) records which files load for seven representative tasks and confirms that unrelated contexts stay out. It is structural reasoning evidence, not a model evaluation result.

@@ -11,6 +11,7 @@ fi
 
 packet="$1"; surface="$2"; fixture="$3"; arm="$4"; prompt="$5"; rundir="$6"
 HERE="$(cd "$(dirname "$0")" && pwd)"
+REPO="$(cd "$HERE/../.." && pwd)"
 out="${PACKET_ROOT:?set PACKET_ROOT to the packet output directory}/$packet"
 
 [[ -e "$rundir" ]] && { printf 'refusing to reuse checkout: %s\n' "$rundir" >&2; exit 1; }
@@ -19,7 +20,8 @@ bash "$HERE/assemble-run.sh" "$arm" "$fixture" "$rundir" >/dev/null
 
 # Recompute exactly what the hook injects for this prompt (arm B, Claude only).
 injected="$out/.injected.txt"; : > "$injected"
-if [[ "$arm" == "B" && -f "$rundir/agent-rules/tools/route-hook.mjs" ]]; then
+if [[ "$surface" == "claude" && "$arm" == "B" \
+   && -f "$rundir/agent-rules/tools/route-hook.mjs" ]]; then
   printf '%s' "$prompt" | node -e '
   let s=""; process.stdin.on("data",(d)=>{s+=d});
   process.stdin.on("end",()=>process.stdout.write(JSON.stringify({prompt:s})));' > "$out/.prompt.json"
@@ -27,7 +29,8 @@ if [[ "$arm" == "B" && -f "$rundir/agent-rules/tools/route-hook.mjs" ]]; then
     ( cd "$rundir" && node agent-rules/tools/route-hook.mjs "$chunk" < "$out/.prompt.json" ) \
       2>> "$out/.hook-stderr.txt" | grep -oE '^===== agent-rules/.*\.md' >> "$injected" || true
   done
-  sed -i '' 's|^===== agent-rules/||' "$injected"
+  sed 's|^===== agent-rules/||' "$injected" > "$injected.tmp"
+  mv "$injected.tmp" "$injected"
   sort -u -o "$injected" "$injected"
 fi
 
@@ -61,9 +64,26 @@ else
 fi
 end="$(date +%s)"
 
-git -C "$rundir" add -A
-git -C "$rundir" diff HEAD > "$out/run.diff"
-git -C "$rundir" status --porcelain > "$out/status.txt"
+FIXTURES="$REPO/evals/fixtures"
+# shellcheck source=fixture-meta.sh
+. "$HERE/fixture-meta.sh"
+fixture_meta "$fixture"
+capture() {
+  git -C "$1" add -A
+  git -C "$1" diff HEAD
+}
+if [ -n "$ROOTS" ]; then
+  : > "$out/run.diff"; : > "$out/status.txt"
+  for root in $ROOTS; do
+    printf '===== %s\n' "$root" >> "$out/run.diff"
+    capture "$rundir/$root" >> "$out/run.diff"
+    printf '===== %s\n' "$root" >> "$out/status.txt"
+    git -C "$rundir/$root" status --porcelain >> "$out/status.txt"
+  done
+else
+  capture "$rundir" > "$out/run.diff"
+  git -C "$rundir" status --porcelain > "$out/status.txt"
+fi
 node "$HERE/package-run.mjs" "$surface" "$transcript" "$out" "$injected" >/dev/null
 printf -- '- Wall clock: %ss\n' "$((end - start))" >> "$out/covariates.md"
 rm -f "$injected" "$out/.prompt.json"

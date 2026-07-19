@@ -1,38 +1,67 @@
 # Agent Engineering Rules
 
-Version 0.3.0
+Version 0.3.0 · MIT licensed
 
-A compact, modular rule system for Claude Code, OpenAI Codex CLI and IDE integrations, Codex Cloud, and other coding agents that follow repository instructions. Behaviorally tested: see the evidence section below.
+A compact, modular rule system for coding agents that read repository
+instructions: Claude Code, Codex CLI and IDE integrations, Codex Cloud, and
+others. Drop it into a project and your agent gets consistent engineering
+judgement instead of its defaults.
 
-## Start here
+**New here? Go to [INSTALL.md](INSTALL.md).** It takes about five minutes.
 
-- Coding agents follow [AGENTS.md](AGENTS.md), the single task router.
-- Claude Code reaches the router through the [CLAUDE.md](CLAUDE.md) import; if your agent skips routed files, wire the mechanical delivery hook per [tools/README.md](tools/README.md).
-- Host repositories follow [ADOPT.md](ADOPT.md) and keep this directory read-only.
+## What it does
 
-Do not load the whole repository. The router selects a small universal core, one delivery profile, one task route, and only evidence-matched technology contexts.
+Agents left alone skip reproductions, overbuild small fixes, invent APIs they
+half-remember, and report a green result they never observed. This corpus names
+those behaviours in specific, checkable sentences.
 
-## Architecture
+The router loads a small universal core, one profile, one task route, and only
+the technology contexts your repository shows evidence of: roughly 1,300 words
+for a typical task, not the whole corpus.
+
+## What is in it
 
 | Area | Authority |
 | --- | --- |
 | `core/` | Priorities, evidence, conventions, generated-code failure modes, communication |
 | `workflow/` | Implementation, verification, autonomous work, review convergence, skeptic pass |
-| `design/` and `architecture/` | Code and system design, loaded by concern |
+| `design/`, `architecture/` | Code and system design, loaded by concern |
 | `quality/` | Testing, security, observability, performance |
-| `contexts/` | Technology and workflow guidance, loaded only when present |
-| `profiles/` | Delivery assurance independent of task type |
+| `contexts/` | Technology guidance, loaded only when that technology is present |
+| `profiles/` | Delivery assurance: prototype, standard, regulated |
 
-Shared policy appears once in these canonical directories; agent entrypoints and skills only route to it. Profile precedence: explicit project selection, host instructions, task instruction, then [standard](profiles/standard.md). [Prototype](profiles/prototype.md) reduces ceremony, never correctness; [regulated](profiles/regulated.md) adds traceability without establishing legal compliance. Repository-scoped Codex skills live under `.agents/skills/`.
+[AGENTS.md](AGENTS.md) is the router and the authority on what loads when.
+[ADOPT.md](ADOPT.md) is the integration procedure an agent follows.
+[CLAUDE.md](CLAUDE.md) is the Claude Code adapter.
 
-## Evidence
+Profile precedence: explicit project selection, then host instructions, then task
+instruction, otherwise [standard](profiles/standard.md).
+[Prototype](profiles/prototype.md) reduces ceremony, never correctness.
+[Regulated](profiles/regulated.md) adds traceability; it does not establish legal
+compliance.
 
-These rules were tested under a pre-registered protocol ([evals/DECISION-PROTOCOL.md](evals/DECISION-PROTOCOL.md)): blinded runs across three arms (no rules, this corpus, a minimal-kernel control), two agent surfaces, two independent grader families. Interim results at 6 of 14 scenarios (108 runs): the corpus passed 35/36 guardrail runs against 27/36 for no rules (Fisher exact p = 0.014). The mechanism is sentence-level: concrete behavioral sentences (reproduce before editing, report commands with exit statuses) correspond with the conduct they name; the kernel control matched the corpus only where it carries the same sentences. Three candidate harms in the corpus's own rules were tested and rejected. Full receipts, reconciliations, and caveats live under `evals/results/`; claims extend only to the tested scenarios, models, and surfaces. Not yet measured: open-ended capability outcomes and additional model families. Measurement is paused, not abandoned.
+## Does it actually work
 
-## Tools
+Tested under a pre-registered protocol: blinded runs across three arms (no rules,
+this corpus, a minimal-kernel control), two agent surfaces, two independent
+grader families. At 6 of 14 scenarios (108 runs) the corpus passed 35/36
+guardrail runs against 27/36 for no rules (Fisher exact p = 0.014).
 
-`node tools/validate-system.mjs` checks links, frontmatter, skill metadata, and instruction-size budgets. [tools/README.md](tools/README.md) documents the route-delivery hook and review scanners.
+The mechanism is sentence-level: concrete sentences ("reproduce the failure
+before editing") correspond with the conduct they name, abstract restatements
+did not, and the kernel control matched only where it carried the same
+sentences. Three candidate harms in these rules were tested and rejected.
 
-These rules are advisory and behavior varies by model and surface. Requirements that must never fail belong in repository-native linters, typecheckers, hooks, or CI gates.
+Claims extend only to the tested scenarios, models, and surfaces. Protocol,
+per-run findings, and caveats: [evals/](evals/). Paused at 6 of 14 scenarios.
 
-MIT licensed. See [LICENSE](LICENSE).
+## Honest limits
+
+Advisory rules; behaviour varies by model and surface. Anything that must never
+fail belongs in a linter, typechecker, hook, or CI gate, not in prose an agent
+may or may not follow. If your agent skips routed files despite the router being
+in context, wire the delivery hook in [tools/README.md](tools/README.md); that
+failure mode is real and measured.
+
+`node tools/validate-system.mjs` checks links, frontmatter, and size budgets.
+Run it after any edit.

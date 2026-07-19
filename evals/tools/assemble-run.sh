@@ -16,6 +16,8 @@ RULES_ROOT="$(cd "$HERE/../.." && pwd)"
 # shellcheck disable=SC2034  # consumed by fixture_meta in fixture-meta.sh
 FIXTURES="$RULES_ROOT/evals/fixtures"
 . "$HERE/fixture-meta.sh"
+# shellcheck source=host-block.sh
+. "$HERE/host-block.sh"
 fixture_meta "$FIXTURE"
 
 if [ -e "$DEST" ]; then
@@ -40,16 +42,7 @@ case "$ARM" in
     for item in AGENTS.md CLAUDE.md ADOPT.md core workflow design architecture quality contexts profiles agents .agents tools; do
       cp -R "$RULES_ROOT/$item" "$DEST/agent-rules/$item"
     done
-    cat > "$DEST/AGENTS.md" <<EOF
-## Agent Engineering Rules
-
-Before starting any task, read \`agent-rules/AGENTS.md\` and load the files its task table routes for the current task. Required context, not optional documentation.
-Active profile: \`agent-rules/profiles/$PROFILE.md\`.
-Active canonical contexts: $CONTEXTS; ignore the others.
-Project contexts: none.
-Treat \`agent-rules/\` as read-only. Host rules override it except the correctness, security, and data-integrity priorities in \`agent-rules/core/priorities.md\`.
-EOF
-    printf '@AGENTS.md\n@agent-rules/AGENTS.md\n' > "$DEST/CLAUDE.md"
+    write_rules_block "$DEST" "$PROFILE" "$CONTEXTS"
     mkdir -p "$DEST/.claude"
     cat > "$DEST/.claude/settings.json" <<'EOF'
 {
@@ -70,11 +63,11 @@ EOF
 EOF
     ;;
   C)
-    emit_kernel > "$DEST/AGENTS.md"
+    emit_kernel | append_block "$DEST"
     cp "$DEST/AGENTS.md" "$DEST/CLAUDE.md"
     ;;
   D)
-    emit_paragraph > "$DEST/AGENTS.md"
+    emit_paragraph | append_block "$DEST"
     cp "$DEST/AGENTS.md" "$DEST/CLAUDE.md"
     ;;
   *)
@@ -97,4 +90,4 @@ git -C "$DEST" add -A
 # tell may be observable from inside a run (e.g., via git log).
 git -C "$DEST" -c user.name=dev -c user.email=dev@local commit -q --allow-empty -m "initial import"
 echo "assembled: $DEST (arm $ARM, fixture $FIXTURE)"
-echo "after the run: git -C $DEST diff > run.diff"
+echo "after the run: git -C $DEST add -A && git -C $DEST diff HEAD > run.diff"
