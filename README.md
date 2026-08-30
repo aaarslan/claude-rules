@@ -1,19 +1,25 @@
+> [!IMPORTANT]
+> This repository is the legacy v0.3 predecessor and evaluation record.
+> The maintained project is [Agent Engineering Rules](https://github.com/aaarslan/agent-engineering-rules).
+> New installations should use:
+>
+> ```bash
+> npm install --global @aaarslan/aer
+> aer init --host claude --dry-run
+> aer init --host claude
+> ```
+
 # Agent Engineering Rules
 
 Version 0.3.0 · MIT licensed
 
 A compact, modular rule system for coding agents that read repository
-instructions: Claude Code, Codex CLI and IDE integrations, Codex Cloud, and
-others. Drop it into a project and your agent gets consistent engineering
-judgement instead of its defaults.
-
-**New here? Go to [INSTALL.md](INSTALL.md).** It takes about five minutes.
+instructions. Drop it into a project for consistent engineering judgement.
 
 ## What it does
 
-Agents left alone skip reproductions, overbuild small fixes, invent APIs they
-half-remember, and report a green result they never observed. This corpus names
-those behaviours in specific, checkable sentences.
+Agents may skip reproductions, overbuild fixes, invent APIs, or report results
+they never observed. This corpus addresses those behaviours in checkable sentences.
 
 The router loads a small universal core, one profile, one task route, and only
 the technology contexts your repository shows evidence of: roughly 1,300 words
@@ -34,11 +40,9 @@ for a typical task, not the whole corpus.
 [ADOPT.md](ADOPT.md) is the integration procedure an agent follows.
 [CLAUDE.md](CLAUDE.md) is the Claude Code adapter.
 
-Profile precedence: explicit project selection, then host instructions, then task
-instruction, otherwise [standard](profiles/standard.md).
-[Prototype](profiles/prototype.md) reduces ceremony, never correctness.
-[Regulated](profiles/regulated.md) adds traceability; it does not establish legal
-compliance.
+Profile precedence is explicit project selection, host instructions, task
+instruction, then [standard](profiles/standard.md). [Prototype](profiles/prototype.md)
+reduces ceremony; [regulated](profiles/regulated.md) adds traceability, not legal compliance.
 
 ## Does it actually work
 
@@ -57,11 +61,9 @@ per-run findings, and caveats: [evals/](evals/). Paused at 6 of 14 scenarios.
 
 ## Honest limits
 
-Advisory rules; behaviour varies by model and surface. Anything that must never
-fail belongs in a linter, typechecker, hook, or CI gate, not in prose an agent
-may or may not follow. If your agent skips routed files despite the router being
-in context, wire the delivery hook in [tools/README.md](tools/README.md); that
-failure mode is real and measured.
+These are advisory rules; behaviour varies by model and surface. Hard requirements
+belong in linters, typecheckers, hooks, or CI. If routed files are skipped, wire
+the measured delivery hook in [tools/README.md](tools/README.md).
 
 `node tools/validate-system.mjs` checks links, frontmatter, and size budgets.
 Run it after any edit.
